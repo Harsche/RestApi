@@ -4,7 +4,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddControllers(options => {
+    options.ReturnHttpNotAcceptable = true;
+}).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
 
 var connectionString = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddSqlServer<ApplicationDbContext>(connectionString);
