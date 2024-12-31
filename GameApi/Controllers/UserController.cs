@@ -4,6 +4,7 @@ using GameApi.Models.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameApi.Controllers
 {
@@ -24,8 +25,7 @@ namespace GameApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<UserDTO>> GetUsers()
         {
-            var users = _db.Users.Select(u => u.ToDTO());
-            return Ok(users);
+            return Ok(_db.Users.ToList());
         }
 
         [HttpGet("{id:int}", Name = "GetUser")]
@@ -51,7 +51,7 @@ namespace GameApi.Controllers
 
             if (userDTO.Id != 0) { return StatusCode(StatusCodes.Status500InternalServerError); }
 
-            if (_db.Users.Any(u => u.Username.ToLower() == userDTO.Username.ToLower()))
+            if (_db.Users.Any(u => u.Username.Equals(userDTO.Username, StringComparison.OrdinalIgnoreCase)))
             {
                 ModelState.AddModelError("", "Username already exists.");
                 return BadRequest(ModelState);
@@ -91,12 +91,8 @@ namespace GameApi.Controllers
         {
             if (id <= 0 || userDTO.Id != id) { return BadRequest(); }
 
-            var user = _db.Users.FirstOrDefault(u => u.Id == id);
-
-            if (user == null) { return NotFound(); }
-
-            user.Username = userDTO.Username;
-            user.Level = userDTO.Level;
+            var user = userDTO.ToUser();
+            _db.Users.Update(user);
             _db.SaveChanges();
 
             return NoContent();
@@ -106,19 +102,22 @@ namespace GameApi.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult UpdatePartialUser(int id, JsonPatchDocument<User> patchDTO)
+        public IActionResult UpdatePartialUser(int id, JsonPatchDocument<UserDTO> patchDTO)
         {
             if (id <= 0 || patchDTO == null) { return BadRequest(); }
 
-            var user = _db.Users.FirstOrDefault(u => u.Id == id);
+            var user = _db.Users.AsNoTracking().FirstOrDefault(u => u.Id == id);
 
             if (user == null) { return NotFound(); }
 
-            patchDTO.ApplyTo(user, ModelState);
+            var userDTO = user.ToDTO();
+            patchDTO.ApplyTo(userDTO, ModelState);
 
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
+            _db.Users.Update(userDTO.ToUser());
             _db.SaveChanges();
+
             return NoContent();
         }
     }
