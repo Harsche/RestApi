@@ -11,10 +11,12 @@ namespace GameApi.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly ILogger<UserController> _logger;
         private readonly ApplicationDbContext _db;
 
-        public UserController(ApplicationDbContext db)
+        public UserController(ILogger<UserController> logger, ApplicationDbContext db)
         {
+            _logger = logger;
             _db = db;
         }
 
