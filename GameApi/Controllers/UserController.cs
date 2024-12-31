@@ -51,7 +51,7 @@ namespace GameApi.Controllers
 
             if (userDTO.Id != 0) { return StatusCode(StatusCodes.Status500InternalServerError); }
 
-            if (_db.Users.Any(u => u.Username.Equals(userDTO.Username, StringComparison.OrdinalIgnoreCase)))
+            if (_db.Users.Any(u => u.Username.ToLower() == userDTO.Username.ToLower()))
             {
                 ModelState.AddModelError("", "Username already exists.");
                 return BadRequest(ModelState);
@@ -91,8 +91,13 @@ namespace GameApi.Controllers
         {
             if (id <= 0 || userDTO.Id != id) { return BadRequest(); }
 
-            var user = userDTO.ToUser();
-            _db.Users.Update(user);
+            var user = _db.Users.FirstOrDefault(u => u.Id == id);
+
+            if (user == null) { return NotFound(); }
+
+            user.Username = userDTO.Username;
+            user.Level = userDTO.Level;
+
             _db.SaveChanges();
 
             return NoContent();
@@ -115,7 +120,9 @@ namespace GameApi.Controllers
 
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
-            _db.Users.Update(userDTO.ToUser());
+            var updatedUser = userDTO.ToUser();
+            updatedUser.CreateDate = user.CreateDate;
+            _db.Users.Update(updatedUser);
             _db.SaveChanges();
 
             return NoContent();
