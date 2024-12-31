@@ -1,7 +1,9 @@
 @GameApi_HostAddress = http://localhost:5159/api
+@JWT = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImhlbnJpIiwic3ViIjoiaGVucmkiLCJqdGkiOiI4MThkYTIwMiIsImF1ZCI6WyJodHRwOi8vbG9jYWxob3N0OjE2NjM4IiwiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzODciLCJodHRwOi8vbG9jYWxob3N0OjUxNTkiLCJodHRwczovL2xvY2FsaG9zdDo3MTU0Il0sIm5iZiI6MTczNTYzNjMzNiwiZXhwIjoxNzQzNDEyMzM2LCJpYXQiOjE3MzU2MzYzMzcsImlzcyI6ImRvdG5ldC11c2VyLWp3dHMifQ.VQxvR4WOjSAqgvmAzj0pmrA8sGrRHWS_e3ElK-N3ANg
 
 GET {{GameApi_HostAddress}}/user
 Accept: application/json
+Authorization: Bearer {{JWT}}
 
 ###
 
