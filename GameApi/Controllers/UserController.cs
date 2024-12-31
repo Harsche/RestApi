@@ -2,6 +2,7 @@ using GameApi.Data;
 using GameApi.Models;
 using GameApi.Models.DTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameApi.Controllers
@@ -96,6 +97,26 @@ namespace GameApi.Controllers
             user.Level = userDTO.Level;
             _db.SaveChanges();
 
+            return NoContent();
+        }
+
+        [HttpPatch("{id:int}", Name = "UpdatePartialUser")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult UpdatePartialUser(int id, JsonPatchDocument<User> patchDTO)
+        {
+            if (id <= 0 || patchDTO == null) { return BadRequest(); }
+
+            var user = _db.Users.FirstOrDefault(u => u.Id == id);
+
+            if (user == null) { return NotFound(); }
+
+            patchDTO.ApplyTo(user, ModelState);
+
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
+            _db.SaveChanges();
             return NoContent();
         }
     }
