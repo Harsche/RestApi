@@ -55,6 +55,7 @@ namespace GameApi.Controllers
             }
 
             var user = userDTO.ToUser();
+            user.CreateDate = DateTime.UtcNow;
             _db.Users.Add(user);
             _db.SaveChanges();
 
@@ -74,6 +75,25 @@ namespace GameApi.Controllers
             if (user == null) { return NotFound(); }
 
             _db.Users.Remove(user);
+            _db.SaveChanges();
+
+            return NoContent();
+        }
+
+        [HttpPut("{id:int}", Name = "UpdateUser")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult UpdateUser(int id, [FromBody] UserDTO userDTO)
+        {
+            if (id <= 0 || userDTO.Id != id) { return BadRequest(); }
+
+            var user = _db.Users.FirstOrDefault(u => u.Id == id);
+
+            if (user == null) { return NotFound(); }
+
+            user.Username = userDTO.Username;
+            user.Level = userDTO.Level;
             _db.SaveChanges();
 
             return NoContent();

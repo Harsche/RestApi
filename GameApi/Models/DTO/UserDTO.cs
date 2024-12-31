@@ -11,13 +11,16 @@ public class UserDTO
     [MinLength(2)]
     public string Username { get; set; }
 
+    [Range(1, 100)]
+    public int Level { get; set; }
+
     public User ToUser()
     {
         return new User
         {
             Id = Id,
             Username = Username,
-            CreateDate = DateTime.Now
+            Level = Level
         };
     }
 }

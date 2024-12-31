@@ -13,9 +13,9 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>().HasData(
-            new User{Id= 1, Username="Ocoloso", CreateDate = new DateTime(2024, 12, 30)},
-            new User{Id= 2, Username="Biloso", CreateDate = new DateTime(2024, 9, 11)},
-            new User{Id= 3, Username="Ocoscocosco", CreateDate = new DateTime(2024, 1, 11)}
+            new User { Id = 1, Username = "Ocoloso", CreateDate = new DateTime(2024, 12, 30), Level = 100 },
+            new User { Id = 2, Username = "Biloso", CreateDate = new DateTime(2024, 9, 11), Level = 55 },
+            new User { Id = 3, Username = "Ocoscocosco", CreateDate = new DateTime(2024, 1, 11), Level = 2 }
         );
     }
 
