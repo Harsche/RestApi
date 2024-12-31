@@ -1,6 +1,51 @@
-@GameApi_HostAddress = http://localhost:5159
+@GameApi_HostAddress = http://localhost:5159/api
 
-GET {{GameApi_HostAddress}}/weatherforecast/
+GET {{GameApi_HostAddress}}/user
 Accept: application/json
 
 ###
+
+GET {{GameApi_HostAddress}}/user/11
+Accept: application/json
+
+###
+
+POST  {{GameApi_HostAddress}}/user
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "Olicoboso",
+  "level": 1
+}
+
+###
+
+DELETE   {{GameApi_HostAddress}}/user/12
+Accept: application/json
+
+###
+
+PUT   {{GameApi_HostAddress}}/user/13
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 13,
+  "username": "OOOOO",
+  "level": 2
+}
+
+
+###
+
+PATCH   {{GameApi_HostAddress}}/user/11
+Content-Type: application/json-patch+json
+
+[
+  {
+    "path": "/username",
+    "op": "replace",
+    "value": "Obicoloso"
+  }
+]
