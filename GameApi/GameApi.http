@@ -1,23 +1,33 @@
 @GameApi_HostAddress = http://localhost:5159/api
-@JWT = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImhlbnJpIiwic3ViIjoiaGVucmkiLCJqdGkiOiI4MThkYTIwMiIsImF1ZCI6WyJodHRwOi8vbG9jYWxob3N0OjE2NjM4IiwiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzODciLCJodHRwOi8vbG9jYWxob3N0OjUxNTkiLCJodHRwczovL2xvY2FsaG9zdDo3MTU0Il0sIm5iZiI6MTczNTYzNjMzNiwiZXhwIjoxNzQzNDEyMzM2LCJpYXQiOjE3MzU2MzYzMzcsImlzcyI6ImRvdG5ldC11c2VyLWp3dHMifQ.VQxvR4WOjSAqgvmAzj0pmrA8sGrRHWS_e3ElK-N3ANg
+@JWT = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImhlbnJpIiwic3ViIjoiaGVucmkiLCJqdGkiOiI0MzY5NzdmMyIsInJvbGUiOiJhZG1pbiIsImF1ZCI6WyJodHRwOi8vbG9jYWxob3N0OjE2NjM4IiwiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzODciLCJodHRwOi8vbG9jYWxob3N0OjUxNTkiLCJodHRwczovL2xvY2FsaG9zdDo3MTU0Il0sIm5iZiI6MTczNTYzNjgzMCwiZXhwIjoxNzQzNDEyODMwLCJpYXQiOjE3MzU2MzY4MzEsImlzcyI6ImRvdG5ldC11c2VyLWp3dHMifQ.6jDGy8j_mdDAlRGM1Q2Y3IJWxXQaWFxjN2RitbpXy5g
 
+
+@JWT1 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImhlbnJpIiwic3ViIjoiaGVucmkiLCJqdGkiOiI5YzRlOGRmNSIsImF1ZCI6WyJodHRwOi8vbG9jYWxob3N0OjE2NjM4IiwiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzODciLCJodHRwOi8vbG9jYWxob3N0OjUxNTkiLCJodHRwczovL2xvY2FsaG9zdDo3MTU0Il0sIm5iZiI6MTczNTYzODE3OCwiZXhwIjoxNzQzNDE0MTc4LCJpYXQiOjE3MzU2MzgxNzgsImlzcyI6ImRvdG5ldC11c2VyLWp3dHMifQ.kNlA64WrdTSeIiCABPuY1-R_SGUGti7ZxFW0Jv1D_vY
+
+### Get Users
 GET {{GameApi_HostAddress}}/user
 Accept: application/json
 Authorization: Bearer {{JWT}}
 
-###
-
+### Get User
 GET {{GameApi_HostAddress}}/user/11
 Accept: application/json
+Authorization: Bearer {{JWT}}
+
+### Get My User
+GET {{GameApi_HostAddress}}/user/me
+Accept: application/json
+Authorization: Bearer {{JWT}}
 
 ###
 
 POST  {{GameApi_HostAddress}}/user
 Accept: application/json
 Content-Type: application/json
+Authorization: Bearer {{JWT}}
 
 {
-  "username": "Olicoboso",
+  "username": "henri",
   "level": 1
 }
 
@@ -25,12 +35,14 @@ Content-Type: application/json
 
 DELETE   {{GameApi_HostAddress}}/user/12
 Accept: application/json
+Authorization: Bearer {{JWT}}
 
 ###
 
 PUT   {{GameApi_HostAddress}}/user/13
 Accept: application/json
 Content-Type: application/json
+Authorization: Bearer {{JWT}}
 
 {
   "id": 13,
@@ -43,6 +55,7 @@ Content-Type: application/json
 
 PATCH   {{GameApi_HostAddress}}/user/11
 Content-Type: application/json-patch+json
+Authorization: Bearer {{JWT}}
 
 [
   {

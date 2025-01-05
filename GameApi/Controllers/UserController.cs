@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using GameApi.Data;
 using GameApi.Models;
 using GameApi.Models.DTO;
@@ -24,10 +25,21 @@ namespace GameApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<UserDTO>> GetUsers()
         {
             return Ok(_db.Users.ToList());
+        }
+
+        [HttpGet]
+        [Route("me")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<IEnumerable<UserDTO>> GetMyUser()
+        {
+            ArgumentNullException.ThrowIfNull(HttpContext.User.Identity?.Name);
+            var name = HttpContext.User.Identity.Name;
+            return Ok(_db.Users.First(u => u.Username == name));
         }
 
         [HttpGet("{id:int}", Name = "GetUser")]
